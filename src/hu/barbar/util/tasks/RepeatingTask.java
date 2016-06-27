@@ -1,6 +1,7 @@
 package hu.barbar.util.tasks;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class RepeatingTask extends Task {
 
@@ -11,6 +12,8 @@ public abstract class RepeatingTask extends Task {
 	
 	
 	ArrayList<Long> existingSingleChilds = null;
+	
+	protected Date generatedUntil = null;
 	
 
 	public RepeatingTask(long id, String taskContent, int type) {
@@ -45,6 +48,18 @@ public abstract class RepeatingTask extends Task {
 			}
 		}
 		return false;
+	}
+	
+	
+	public void setGeneratedUntil(Date dateOfLastGeneratedSingleOccurance){
+		this.generatedUntil = dateOfLastGeneratedSingleOccurance;
+	}
+	
+	/**
+	 * @return null if no generated singleTask child yet. 
+	 */
+	public Date getLastGeneratedDate(){
+		return this.generatedUntil;
 	}
 	
 }
