@@ -6,12 +6,12 @@ public class TaskHandler {
 
 	private ArrayList<SingleTask> scheduledTasks = null;
 	
-	private ArrayList<Task> taskPlans = null;
+	private ArrayList<RepeatingTask> taskPlans = null;
 
 	
 	public TaskHandler(){
 		scheduledTasks = new ArrayList<SingleTask>();
-		taskPlans = new ArrayList<Task>();
+		taskPlans = new ArrayList<RepeatingTask>();
 	}
 	
 	
@@ -19,7 +19,7 @@ public class TaskHandler {
 		this.scheduledTasks.add(task);
 	}
 	
-	public void addPlannedTask(Task task){
+	public void addPlannedTask(RepeatingTask task){
 		this.taskPlans.add(task);
 	}
 	
@@ -38,7 +38,7 @@ public class TaskHandler {
 		
 	}
 	
-	public Task getPlannedTaskWithID(long id){
+	public RepeatingTask getPlannedTaskWithID(long id){
 		if(taskPlans == null || taskPlans.size() == 0){
 			return null;
 		}
@@ -50,6 +50,17 @@ public class TaskHandler {
 		}
 		
 		return null;
+		
+	}
+	
+	
+	protected void generateSingleTasksFromScheduledTaskWithID(long id){
+		RepeatingTask task = getPlannedTaskWithID(id);
+		if(task == null){
+			//TODO Handle this case
+		}else{
+			//TODO
+		}
 		
 	}
 	
