@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import hu.barbar.util.filehandling.FileHandler;
 import hu.barbar.util.filehandling.XMLHandler;
 import hu.barbar.util.tasks.DailyRepeatingTask;
 import hu.barbar.util.tasks.RepeatingTask;
@@ -21,26 +22,38 @@ public class Test {
 	private void doIt(){
 		
 		ArrayList<Task> list = new ArrayList<>();
+		SingleTask st, st2, st3;
 		
-		SingleTask st = new SingleTask("doThis1", new Date());
-		SingleTask st2 = new SingleTask("doThis2", new Date());
-		SingleTask st3 = new SingleTask("doThis3", new Date());
+		/*
+		st = new SingleTask("doThis1", new Date());
+		st2 = new SingleTask("doThis2", new Date());
+		st3 = new SingleTask("doThis3", new Date());
+		/**/
+		
+		list = FileHandler.loadTaskList("listFile.dat");
+		
+		st = (SingleTask) list.get(0);
+		st2 = (SingleTask) list.get(1);
+		st3 = (SingleTask) list.get(2);
+		
 		show(st.toString());
-		st2.setDone();
 		show(st2.toString());
 		show(st3.toString());
 		
 		
 		RepeatingTask rt = new DailyRepeatingTask(12, "daily concent", new Date(), null);
 		
-		
+		/*
 		list.add(st);
 		list.add(st2);
 		list.add(st3);
 		
+		SimpleFileHandler.saveTaskList(list, "listFile.dat");
+		/**/
 		
+		/*
 		XMLHandler xml = new XMLHandler();
-		xml.saveToFile(list, "c:\\testSave.xml");
+		xml.saveobjectToFile(st, "c:\\testSave.xml");
 		/**/
 	}
 	

@@ -30,4 +30,20 @@ public class XMLHandler {
 		}
 	}
 	
+	public void saveobjectToFile(Task task, String filename){
+		XMLEncoder encoder;
+		try {
+			encoder = new XMLEncoder(
+			          	new BufferedOutputStream(
+			        		  new FileOutputStream(filename))
+			);
+		
+			encoder.writeObject(task);
+			encoder.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
