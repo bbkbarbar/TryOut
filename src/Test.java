@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import hu.barbar.util.DateHandler;
 import hu.barbar.util.filehandling.FileHandler;
 import hu.barbar.util.filehandling.XMLHandler;
 import hu.barbar.util.tasks.DailyRepeatingTask;
@@ -37,12 +38,13 @@ public class Test {
 		st2 = (SingleTask) list.get(1);
 		st3 = (SingleTask) list.get(2);
 		
-		show(st.toString());
-		show(st2.toString());
-		show(st3.toString());
+		Date d = new Date();
 		
+		d = DateHandler.getNextOccurance(d, 22, 41, 11);
+		show("Now: " + DateHandler.getDateStr(d));
 		
-		RepeatingTask rt = new DailyRepeatingTask(12, "daily concent", new Date(), null);
+		show("next: " + DateHandler.getDateStr(DateHandler.getNextOccurance(d, 22, 41, 11)));
+		
 		
 		/*
 		list.add(st);
