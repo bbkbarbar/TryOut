@@ -11,7 +11,7 @@ import hu.barbar.util.tasks.Task;
 
 public class FileHandler {
 	
-	public static boolean saveTaskList(ArrayList<Task> list, String fileName){
+	public static boolean saveTaskList(ArrayList<?> list, String fileName){
 		
 		boolean res = false;
 		ObjectOutputStream oos = null;
@@ -30,7 +30,7 @@ public class FileHandler {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Task> loadTaskList(String fileName){
+	public static ArrayList<?> loadTaskList(String fileName){
 		
 		ArrayList<Task> res = null;
 		

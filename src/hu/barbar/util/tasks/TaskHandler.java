@@ -1,8 +1,15 @@
 package hu.barbar.util.tasks;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import hu.barbar.util.filehandling.FileHandler;
 
 public class TaskHandler {
+	
+	private static final String NAME_OF_DATA_FILE_FOR_SINGLE_TASKS = "singleTasks.dat";
+	
+	private static final String NAME_OF_DATA_FILE_FOR_REPEATING_TASKS = "scheduledTasks.dat";
 
 	private ArrayList<SingleTask> scheduledTasks = null;
 	
@@ -15,6 +22,18 @@ public class TaskHandler {
 	}
 	
 	
+	public void saveData(){
+		FileHandler.saveTaskList(taskPlans, NAME_OF_DATA_FILE_FOR_REPEATING_TASKS);
+		FileHandler.saveTaskList(scheduledTasks, NAME_OF_DATA_FILE_FOR_SINGLE_TASKS);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadData(){
+		scheduledTasks = (ArrayList<SingleTask>) FileHandler.loadTaskList(NAME_OF_DATA_FILE_FOR_SINGLE_TASKS);
+		taskPlans = (ArrayList<RepeatingTask>) FileHandler.loadTaskList(NAME_OF_DATA_FILE_FOR_REPEATING_TASKS);
+	}
+	
+	
 	public void addScheduledTask(SingleTask task){
 		this.scheduledTasks.add(task);
 	}
@@ -23,7 +42,7 @@ public class TaskHandler {
 		this.taskPlans.add(task);
 	}
 	
-	public SingleTask getScheduledTaskWithID(long id){
+	protected SingleTask getScheduledTaskWithID(long id){
 		if(scheduledTasks == null || scheduledTasks.size() == 0){
 			return null;
 		}
@@ -38,7 +57,7 @@ public class TaskHandler {
 		
 	}
 	
-	public RepeatingTask getPlannedTaskWithID(long id){
+	protected RepeatingTask getPlannedTaskWithID(long id){
 		if(taskPlans == null || taskPlans.size() == 0){
 			return null;
 		}
@@ -54,14 +73,41 @@ public class TaskHandler {
 	}
 	
 	
-	protected void generateSingleTasksFromScheduledTaskWithID(long id){
-		RepeatingTask task = getPlannedTaskWithID(id);
+	protected void generateSingleTasksFromRepeatingTask(RepeatingTask task, Date until){
 		if(task == null){
 			//TODO Handle this case
 		}else{
-			//TODO
+			
+			Date now = new Date();
+			if(until.before(now)){
+				//TODO
+				return;
+			}
+
+			ArrayList<SingleTask> resultList = task.generateSingleTasks(until);
+			if(resultList == null){
+				//TODO
+				return;
+			}
+			
+			for(int i=0; i<resultList.size(); i++){
+				scheduledTasks.add(resultList.get(i));
+			}
+			
+			
 		}
 		
+	}
+	
+	public void generateAllScheduledSingleTasks(Date until){
+		if(taskPlans == null){
+			//TODO
+			return;
+		}
+		
+		for(int i=0; i<taskPlans.size(); i++){
+			generateSingleTasksFromRepeatingTask(taskPlans.get(i), until);
+		}
 	}
 	
 }

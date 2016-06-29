@@ -19,6 +19,7 @@ public class Test {
 
 	public Test(){}
 
+	@SuppressWarnings("unchecked")
 	private void doIt(){
 		
 		ArrayList<Task> list = new ArrayList<>();
@@ -30,7 +31,7 @@ public class Test {
 		st3 = new SingleTask("doThis3", new Date());
 		/**/
 		
-		list = FileHandler.loadTaskList("listFile.dat");
+		list = (ArrayList<Task>) FileHandler.loadTaskList("listFile.dat");
 		
 		st = (SingleTask) list.get(0);
 		st2 = (SingleTask) list.get(1);

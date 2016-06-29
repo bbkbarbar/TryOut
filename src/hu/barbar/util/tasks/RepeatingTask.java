@@ -62,4 +62,6 @@ public abstract class RepeatingTask extends Task {
 		return this.generatedUntil;
 	}
 	
+	public abstract ArrayList<SingleTask> generateSingleTasks(Date until);
+	
 }

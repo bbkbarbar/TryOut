@@ -1,5 +1,6 @@
 package hu.barbar.util.tasks;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DailyRepeatingTask extends RepeatingTask {
@@ -43,6 +44,26 @@ public class DailyRepeatingTask extends RepeatingTask {
 		}
 		Date now = new Date();
 		return (endDate.before(now));
+	}
+
+	
+	@Override
+	public ArrayList<SingleTask> generateSingleTasks(Date until) {
+		
+		ArrayList<SingleTask> list = new ArrayList<>();
+		
+		Date now = new Date();
+		if(until.before(now)){
+			return list;
+		}
+		
+		
+		Date current = new Date();
+		while (current.before(until)){
+			//TODO: FELBEHAGYVA
+		}
+		
+		return list;
 	}
 
 }
