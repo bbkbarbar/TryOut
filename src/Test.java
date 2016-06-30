@@ -8,6 +8,7 @@ import hu.barbar.util.tasks.DailyRepeatingTask;
 import hu.barbar.util.tasks.RepeatingTask;
 import hu.barbar.util.tasks.SingleTask;
 import hu.barbar.util.tasks.Task;
+import hu.barbar.util.tasks.TaskHandler;
 
 public class Test {
 	
@@ -23,41 +24,27 @@ public class Test {
 	@SuppressWarnings("unchecked")
 	private void doIt(){
 		
-		ArrayList<Task> list = new ArrayList<>();
-		SingleTask st, st2, st3;
-		
-		/*
-		st = new SingleTask("doThis1", new Date());
-		st2 = new SingleTask("doThis2", new Date());
-		st3 = new SingleTask("doThis3", new Date());
-		/**/
-		
-		list = (ArrayList<Task>) FileHandler.loadTaskList("listFile.dat");
-		
-		st = (SingleTask) list.get(0);
-		st2 = (SingleTask) list.get(1);
-		st3 = (SingleTask) list.get(2);
-		
 		Date d = new Date();
-		
-		d = DateHandler.getNextOccurance(d, 22, 41, 11);
+		d = DateHandler.getOccurrenceInNext24h(d, 22, 41, 11);
 		show("Now: " + DateHandler.getDateStr(d));
+		show("next: " + DateHandler.getDateStr(DateHandler.getOccurrenceInNext24h(d, 22, 41, 11)));
 		
-		show("next: " + DateHandler.getDateStr(DateHandler.getNextOccurance(d, 22, 41, 11)));
+		Date taskTime = new Date();
+		taskTime.setHours(16);
+		taskTime.setMinutes(30);
+		DailyRepeatingTask taskPlan = new DailyRepeatingTask("Task-concent", taskTime);
 		
 		
-		/*
-		list.add(st);
-		list.add(st2);
-		list.add(st3);
+		TaskHandler myTaskHandler = new TaskHandler();
+		Date until = DateHandler.plusDay(new Date(), 2);
+		show("\n\nUntil: " + DateHandler.getDateStr(until));
+		myTaskHandler.generateSingleTasksFromRepeatingTask(taskPlan, until);
+		ArrayList<SingleTask> scheduledList = myTaskHandler.getScheduledSingleTasks();
 		
-		SimpleFileHandler.saveTaskList(list, "listFile.dat");
-		/**/
+		for(int i=0; i<scheduledList.size(); i++){
+			show(scheduledList.get(i).toString() + "\n");
+		}
 		
-		/*
-		XMLHandler xml = new XMLHandler();
-		xml.saveobjectToFile(st, "c:\\testSave.xml");
-		/**/
 	}
 	
 	public String cutPrefix(String text, String prefix){

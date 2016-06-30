@@ -13,7 +13,7 @@ public class DateHandler {
 	
 	
 	@SuppressWarnings("deprecation")
-	public static Date getNextOccurance(Date baseDate, int h, int m, int s){
+	public static Date getOccurrenceInNext24h(Date baseDate, int h, int m, int s){
 		
 		if(baseDate == null){
 			return null;
@@ -36,10 +36,7 @@ public class DateHandler {
 		if(nextOccuranceWillInBaseDay){
 			result = baseDate;
 		}else{
-			Calendar c = Calendar.getInstance();
-			c.setTime(baseDate);
-			c.add(Calendar.DATE, 1);
-			result = c.getTime();
+			result = plusDay(baseDate, 1);
 		}
 		
 		result.setHours(hour);
@@ -47,6 +44,14 @@ public class DateHandler {
 		result.setSeconds(sec);
 		
 		return result;
+	}
+	
+	
+	public static Date plusDay(Date d, int day){
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.add(Calendar.DATE, day);
+		return c.getTime();
 	}
 	
 	

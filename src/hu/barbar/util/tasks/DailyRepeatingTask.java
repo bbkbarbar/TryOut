@@ -3,6 +3,8 @@ package hu.barbar.util.tasks;
 import java.util.ArrayList;
 import java.util.Date;
 
+import hu.barbar.util.DateHandler;
+
 public class DailyRepeatingTask extends RepeatingTask {
 
 	/**
@@ -30,10 +32,17 @@ public class DailyRepeatingTask extends RepeatingTask {
 		this.taskTime = taskTime;
 	}
 	
-	public DailyRepeatingTask(String taskContent) {
+	public DailyRepeatingTask(String taskContent, Date taskTime, Date expiration) {
 		super(Task.ID.getNext(), taskContent, Task.Type.DAILY);
+		this.endDate = expiration;
+		this.taskTime = taskTime;
 	}
 	
+	public DailyRepeatingTask(String taskContent, Date taskTime) {
+		super(Task.ID.getNext(), taskContent, Task.Type.DAILY);
+		this.endDate = null;
+		this.taskTime = taskTime;
+	}
 	
 	
 	public boolean isExpired(){
@@ -50,17 +59,32 @@ public class DailyRepeatingTask extends RepeatingTask {
 	@Override
 	public ArrayList<SingleTask> generateSingleTasks(Date until) {
 		
+		if(until == null){
+			return null;
+		}
+		
 		ArrayList<SingleTask> list = new ArrayList<>();
 		
+		
+		/**
+		 *  Generate occurrence only in the future.
+		 */
 		Date now = new Date();
 		if(until.before(now)){
 			return list;
 		}
 		
+		int scheduleHour = this.taskTime.getHours();
+		int scheduleMin  = this.taskTime.getMinutes();
+		int scheduleSec  = this.taskTime.getSeconds();
+		
 		
 		Date current = new Date();
-		while (current.before(until)){
-			//TODO: FELBEHAGYVA
+		Date generatedOccurance = null;
+		while ( ((generatedOccurance = DateHandler.getOccurrenceInNext24h(current, scheduleHour, scheduleMin, scheduleSec)).before(until)) 
+				&& ((this.endDate == null) || (generatedOccurance.before(this.endDate))) ){
+			list.add(new SingleTask(this.taskContent, generatedOccurance));
+			current = DateHandler.plusDay(current, 1);
 		}
 		
 		return list;

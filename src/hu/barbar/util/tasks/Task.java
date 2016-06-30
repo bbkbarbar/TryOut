@@ -49,6 +49,7 @@ public class Task implements Serializable{
 	protected long id = Task.ID.UNDEFINED;
 	
 	
+	
 	public Task(long id, String taskContent, int type) {
 		super();
 		this.id = id;

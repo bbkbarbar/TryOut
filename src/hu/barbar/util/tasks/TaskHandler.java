@@ -42,6 +42,10 @@ public class TaskHandler {
 		this.taskPlans.add(task);
 	}
 	
+	public ArrayList<SingleTask> getScheduledSingleTasks(){
+		return this.scheduledTasks;
+	}
+	
 	protected SingleTask getScheduledTaskWithID(long id){
 		if(scheduledTasks == null || scheduledTasks.size() == 0){
 			return null;
@@ -73,7 +77,7 @@ public class TaskHandler {
 	}
 	
 	
-	protected void generateSingleTasksFromRepeatingTask(RepeatingTask task, Date until){
+	public void generateSingleTasksFromRepeatingTask(RepeatingTask task, Date until){
 		if(task == null){
 			//TODO Handle this case
 		}else{
@@ -92,6 +96,7 @@ public class TaskHandler {
 			
 			for(int i=0; i<resultList.size(); i++){
 				scheduledTasks.add(resultList.get(i));
+				task.addChildID(resultList.get(i).getId());
 			}
 			
 			
